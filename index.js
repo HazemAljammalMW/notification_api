@@ -162,6 +162,7 @@ app.get('/api/check-campaigns', async (req, res) => {
         // Create the FCM message payload
         const message = {
           notification: { title, body, image: img },
+          data: { id }, // Attach campaign ID in data payload
           tokens, // Send to multiple devices
         };
 
@@ -182,6 +183,7 @@ app.get('/api/check-campaigns', async (req, res) => {
           if (deviceToken) {
             // Create notification record
             const notificationData = {
+              id, // Ensure Firestore ID matches campaign ID
               campaignId: id,
               fcmToken: deviceToken,
               status,
@@ -247,6 +249,9 @@ app.get('/api/check-campaigns', async (req, res) => {
     });
   }
 });
+
+
+
 const PORT = process.env.PORT || 3008;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
